@@ -3,24 +3,88 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NORTH EVIA Civil Protection Dashboard v2.7</title>
+<title>NORTH EVIA Civil Protection Dashboard v2.8</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" crossorigin="" />
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#0b1220;color:#eef3f8}
-header{padding:16px 22px;background:#111b2d;border-bottom:1px solid #29364a;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
-h1{margin:0;font-size:21px}
-.sub{color:#9fb0c3;font-size:12px;margin-top:5px}
-.headerRight{display:flex;align-items:center;gap:14px}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:radial-gradient(1200px 600px at 10% -10%,#1a2744 0%,transparent 55%),
+             radial-gradient(900px 500px at 100% 0%,#132033 0%,transparent 50%),
+             #0a101c;
+  color:#eef3f8;
+  letter-spacing:.01em;
+  -webkit-font-smoothing:antialiased;
+}
+header{
+  padding:14px 22px;
+  background:linear-gradient(180deg,#141f33 0%,#101a2b 100%);
+  border-bottom:1px solid rgba(71,95,130,.45);
+  box-shadow:0 8px 28px rgba(0,0,0,.28);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+  position:sticky;top:0;z-index:1000;
+  backdrop-filter:blur(10px);
+}
+h1{margin:0;font-size:20px;font-weight:800;letter-spacing:.02em;
+  background:linear-gradient(90deg,#f8fafc,#93c5fd);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:#9fb0c3;font-size:11.5px;margin-top:4px;line-height:1.4;max-width:620px}
+.headerRight{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .quickDial{display:flex;gap:6px;flex-wrap:wrap}
-.quickDial a{display:inline-flex;align-items:center;gap:4px;font-size:12px;text-decoration:none;color:#eef3f8;
-  background:#18263a;border:1px solid #3b4d65;padding:6px 9px;border-radius:8px;white-space:nowrap}
-#topAlertBanner{padding:12px 22px;font-size:13.5px;font-weight:700;text-align:center;letter-spacing:.3px;}
-#topAlertBanner.warn{background:#c78b00;color:#241a00;animation:alertPulse 1.6s infinite;}
-#topAlertBanner.danger{background:#a12f2f;color:#fff;animation:alertPulse 1.6s infinite;}
-#topAlertBanner.ok{background:#1a3a2a;color:#9fd9b0;font-weight:600;}
-#topAlertBanner.changed{box-shadow:0 0 0 3px rgba(255,255,255,.35) inset;}
-@keyframes alertPulse{0%,100%{opacity:1}50%{opacity:.72}}
+.quickDial a{
+  display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:600;
+  text-decoration:none;color:#eef3f8;
+  background:linear-gradient(180deg,#1c2c44,#152338);
+  border:1px solid rgba(80,110,150,.55);
+  padding:6px 10px;border-radius:999px;white-space:nowrap;
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset;
+  transition:transform .15s,border-color .15s,box-shadow .15s,background .15s;
+}
+.quickDial a:hover{
+  background:linear-gradient(180deg,#243754,#1a2d46);
+  border-color:#60a5fa;
+  box-shadow:0 0 0 3px rgba(59,130,246,.18);
+  transform:translateY(-1px);
+}
+#topAlertBanner{
+  padding:13px 22px;
+  font-size:15.5px;
+  font-weight:800;
+  text-align:center;
+  letter-spacing:.4px;
+  line-height:1.35;
+  border-bottom:1px solid rgba(0,0,0,.15);
+  box-shadow:0 4px 16px rgba(0,0,0,.15);
+  text-shadow:0 1px 0 rgba(0,0,0,.2);
+}
+#topAlertBanner.warn{
+  background:linear-gradient(90deg,#d97706,#f59e0b);
+  color:#140f00;
+  font-weight:900;
+  text-shadow:0 1px 0 rgba(255,255,255,.25);
+  animation:alertPulse 1.8s infinite;
+}
+#topAlertBanner.danger{
+  background:linear-gradient(90deg,#b91c1c,#ef4444);
+  color:#fff;
+  font-weight:900;
+  text-shadow:0 1px 2px rgba(0,0,0,.35);
+  animation:alertPulse 1.4s infinite;
+}
+#topAlertBanner.ok{
+  background:linear-gradient(90deg,#14532d,#166534);
+  color:#ecfdf5;
+  font-weight:700;
+  font-size:14px;
+  text-shadow:0 1px 0 rgba(0,0,0,.25);
+}
+#topAlertBanner.changed{box-shadow:0 0 0 3px rgba(255,255,255,.35) inset}
+@keyframes alertPulse{0%,100%{opacity:1}50%{opacity:.78}}
 #levelReason{font-size:11px;color:#9fb0c3;margin-top:4px;line-height:1.35;max-width:280px;text-align:right}
 #levelReason b{color:#eef3f8}
 #levelChangeLog{font-size:10.5px;color:#7f92a8;margin-top:2px;font-style:italic}
@@ -28,15 +92,53 @@ h1{margin:0;font-size:21px}
 .quickDial a:hover{background:#22334b;border-color:#4c7bd9}
 .clock{font-size:12px;color:#9fb0c3;text-align:right}
 .clock b{display:block;color:#eef3f8;font-size:15px;font-variant-numeric:tabular-nums}
-.level{padding:11px 16px;border-radius:10px;background:#c78b00;font-weight:700;transition:background .4s}
-.level.ok{background:#1f7a4d}
-.level.warn{background:#c78b00}
-.level.danger{background:#a12f2f}
-main{display:grid;grid-template-columns:330px 1fr 340px;gap:12px;padding:12px;min-height:calc(100vh - 90px)}
-.panel{background:#121d2e;border:1px solid #29364a;border-radius:12px;padding:13px;overflow:auto;max-height:calc(100vh - 114px)}
-.panel h2{font-size:14px;margin:14px 0 10px}
-.panel h2:first-child{margin-top:4px}
-.card{padding:10px;border:1px solid #2a3950;border-radius:8px;margin:7px 0;background:#0f1928}
+.level{
+  padding:12px 16px;border-radius:12px;background:linear-gradient(135deg,#d97706,#f59e0b);
+  font-weight:900;font-size:14.5px;letter-spacing:.04em;
+  line-height:1.25;text-align:center;min-width:150px;
+  box-shadow:0 6px 16px rgba(217,119,6,.28);
+  transition:background .35s,box-shadow .35s,transform .15s;
+  text-shadow:0 1px 0 rgba(0,0,0,.2);
+  color:#fff;
+}
+.level.ok{
+  background:linear-gradient(135deg,#15803d,#22c55e);
+  box-shadow:0 6px 16px rgba(34,197,94,.22);
+  text-shadow:0 1px 0 rgba(0,0,0,.25);
+}
+.level.warn{
+  background:linear-gradient(135deg,#d97706,#f59e0b);
+  box-shadow:0 6px 16px rgba(245,158,11,.25);
+  color:#140f00;
+  text-shadow:0 1px 0 rgba(255,255,255,.3);
+}
+.level.danger{
+  background:linear-gradient(135deg,#b91c1c,#ef4444);
+  box-shadow:0 6px 18px rgba(239,68,68,.3);
+  text-shadow:0 1px 2px rgba(0,0,0,.35);
+}
+main{display:grid;grid-template-columns:330px 1fr 340px;gap:14px;padding:14px;min-height:calc(100vh - 96px)}
+.panel{
+  background:linear-gradient(180deg,rgba(18,29,46,.96),rgba(12,20,34,.96));
+  border:1px solid rgba(71,95,130,.4);
+  border-radius:16px;padding:14px;
+  overflow:auto;max-height:calc(100vh - 120px);
+  box-shadow:0 12px 40px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.04);
+}
+.panel h2{
+  font-size:12.5px;margin:16px 0 10px;font-weight:700;
+  letter-spacing:.04em;text-transform:uppercase;color:#c7d2e0;
+}
+.panel h2:first-child{margin-top:2px}
+.card{
+  padding:11px 12px;
+  border:1px solid rgba(58,78,110,.55);
+  border-radius:12px;margin:8px 0;
+  background:linear-gradient(180deg,rgba(18,28,44,.9),rgba(12,20,34,.92));
+  box-shadow:0 2px 8px rgba(0,0,0,.12);
+  transition:border-color .18s,box-shadow .18s,transform .15s;
+}
+.card:hover{border-color:rgba(96,165,250,.35);box-shadow:0 4px 14px rgba(0,0,0,.18)}
 .row{display:flex;justify-content:space-between;gap:8px;align-items:center}
 .muted{color:#9fb0c3}
 .ok{color:#65d38a}
@@ -48,24 +150,64 @@ main{display:grid;grid-template-columns:330px 1fr 340px;gap:12px;padding:12px;mi
 .dot.ok{background:#65d38a}
 .dot.warn{background:#f0c75e}
 .dot.danger{background:#ff6b6b}
-#mapSection{position:relative;min-height:650px;border-radius:12px;overflow:hidden;border:1px solid #34475d}
-#leafletMap{width:100%;height:100%;min-height:650px;background:#2a4a5e}
+#mapSection{
+  position:relative;min-height:650px;border-radius:16px;overflow:hidden;
+  border:1px solid rgba(71,95,130,.45);
+  box-shadow:0 16px 48px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.04);
+}
+#leafletMap{width:100%;height:100%;min-height:650px;background:#0a1220}
 .leaflet-tile-pane.dark-map{filter:invert(1) hue-rotate(185deg) brightness(1.15) contrast(0.95) saturate(0.85)}
 .leaflet-tile-pane.light-map{filter:none}
 .basemapBar{position:absolute;top:10px;left:10px;z-index:600;display:flex;flex-wrap:wrap;gap:4px}
 .basemapBar button{width:auto;padding:5px 9px;margin:0;font-size:11px;border-radius:6px;background:#101a28dd;border:1px solid #3b4d65}
 .basemapBar button.active{border-color:#4c7bd9;background:#1d3352}
 .attrib-note{position:absolute;top:10px;right:10px;background:#101a28dd;padding:5px 9px;border-radius:6px;font-size:10px;color:#9fb0c3;z-index:500}
-button{width:100%;padding:9px;margin:3px 0;border:1px solid #3b4d65;background:#18263a;color:#fff;border-radius:8px;cursor:pointer;font-size:13px}
-button:hover{background:#22334b}
-button.active{border-color:#4c7bd9;background:#1d3352}
-.refreshBtn{background:#173a2b;border-color:#2a6b47}
-.refreshBtn:hover{background:#1e4a37}
-.villageRow{display:flex;justify-content:space-between;font-size:11px;padding:5px 2px;border-bottom:1px solid #1c283b;cursor:pointer;border-radius:4px}
-.villageRow:hover{background:#1a2a40}
-.villageRow:last-child{border-bottom:none}
-.villageRow .vname{color:#cdd9e6}
-.villageBox{max-height:230px;overflow:auto}
+button{
+  width:100%;padding:10px 12px;margin:4px 0;
+  border:1px solid rgba(80,110,150,.5);
+  background:linear-gradient(180deg,#1c2c44,#152338);
+  color:#f1f5f9;border-radius:11px;cursor:pointer;
+  font-size:12.5px;font-weight:600;font-family:inherit;
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset, 0 2px 6px rgba(0,0,0,.12);
+  transition:transform .12s,border-color .15s,box-shadow .15s,background .15s,filter .15s;
+}
+button:hover{
+  background:linear-gradient(180deg,#243754,#1a2d46);
+  border-color:#60a5fa;
+  box-shadow:0 0 0 3px rgba(59,130,246,.15);
+  transform:translateY(-1px);
+}
+button:active{transform:translateY(0)}
+button.active{
+  border-color:#3b82f6;
+  background:linear-gradient(180deg,#1e3a5f,#1d3352);
+  box-shadow:0 0 0 3px rgba(59,130,246,.22), 0 4px 12px rgba(37,99,235,.2);
+}
+.refreshBtn{
+  background:linear-gradient(180deg,#166534,#14532d)!important;
+  border-color:#22c55e!important;color:#ecfdf5!important;
+}
+.refreshBtn:hover{
+  filter:brightness(1.08);
+  box-shadow:0 0 0 3px rgba(34,197,94,.2)!important;
+}
+.villageRow{
+  display:flex;justify-content:space-between;font-size:11.5px;
+  padding:8px 10px;border-bottom:1px solid rgba(40,55,75,.8);
+  cursor:pointer;border-radius:10px;align-items:center;gap:8px;
+  transition:background .15s,border-color .15s,transform .12s,box-shadow .15s;
+  border:1px solid transparent;margin:2px 0;
+}
+.villageRow:hover{background:rgba(37,99,235,.12);border-color:rgba(96,165,250,.25)}
+.villageRow:last-child{border-bottom:1px solid transparent}
+.villageRow .vname{color:#e2e8f0;font-weight:600}
+.villageRow.active,.villageRow.selected{
+  background:linear-gradient(90deg,rgba(37,99,235,.28),rgba(37,99,235,.12)) !important;
+  border:1px solid rgba(96,165,250,.55) !important;
+  box-shadow:0 0 0 3px rgba(59,130,246,.12);
+}
+.villageRow.active .vname,.villageRow.selected .vname{color:#fff}
+.villageBox{position:relative;z-index:1}
 /* Collapsible panels — ομαλή εμφάνιση */
 .collapsible{
   overflow:hidden;
@@ -76,7 +218,7 @@ button.active{border-color:#4c7bd9;background:#1d3352}
 }
 .collapsible.open{
   max-height:50000px;
-  overflow:visible;
+  overflow:hidden;
   opacity:1;
   margin:0;
 }
@@ -86,7 +228,31 @@ button.active{border-color:#4c7bd9;background:#1d3352}
   overflow:visible;
   opacity:1;
 }
-.collapsible.villageBox.open{max-height:230px}
+/* Λίστα οικισμών: σταθερό ύψος + εσωτερικό scroll — ποτέ spill πάνω στα LAYERS */
+#villageList,
+#villageList.collapsible,
+#villageList.collapsible.open{
+  max-height:260px !important;
+  overflow-x:hidden !important;
+  overflow-y:auto !important;
+  opacity:1 !important;
+  margin:0 0 12px 0 !important;
+  background:#0f1928 !important;
+  position:relative;
+  z-index:1;
+  contain:layout paint;
+}
+#layersSection{
+  position:relative;
+  z-index:2;
+  background:#121d2e;
+  padding-top:4px;
+  border-top:1px solid #29364a;
+  margin-top:4px;
+}
+
+
+
 .rainBanner{margin-top:8px;padding:7px 9px;border-radius:7px;font-size:12px;font-weight:600;text-align:center}
 .rainBanner.wet{background:#123a52;color:#7fd0ff}
 .rainBanner.dry{background:#12271a;color:#7fd39a}
@@ -130,7 +296,7 @@ footer .sysOnline::before{content:'';width:7px;height:7px;border-radius:50%;back
 footer a.footerLink{color:#7fd4ff;text-decoration:none;font-size:11px}
 footer a.footerLink:hover{color:#fff;text-decoration:underline}
 @media(max-width:700px){footer{flex-direction:column;text-align:left}footer .footerRight{text-align:left}}
-/* EFFIS FWI graphic (στυλ fotiestora.gr) */
+/* EFFIS FWI graphic */
 .effis-card{padding:10px;border:1px solid #2a3950;border-radius:8px;margin:7px 0;background:#0f1928}
 .effis-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
 .effis-badge{display:inline-block;padding:6px 12px;border-radius:6px;font-weight:700;font-size:14px;color:#fff;background:#555}
@@ -147,7 +313,6 @@ footer a.footerLink:hover{color:#fff;text-decoration:underline}
 .effis-frame{width:100%;height:220px;border:1px solid #2a3950;border-radius:6px;margin-top:8px;background:#0a1220}
 .effis-note{font-size:10.5px;color:#9fb0c3;margin-top:6px;line-height:1.4}
 @media(max-width:1000px){main{grid-template-columns:1fr}#leafletMap,#mapSection{min-height:420px}.panel{max-height:none}}
-
 
 /* Χρωματική οργάνωση ενοτήτων */
 .panel h2.section-color{
@@ -168,13 +333,131 @@ footer a.footerLink:hover{color:#fff;text-decoration:underline}
   padding-left:8px;
 }
 
+/* Τοπικά σημεία πάνω από map layers */
+.leaflet-villagePane-pane{z-index:850!important}
+.leaflet-tooltip-pane{z-index:900!important}
+.leaflet-popup-pane{z-index:950!important}
+.ne-village-icon{background:transparent!important;border:none!important}
+.ne-village-marker{
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:auto;
+}
+.ne-village-marker .ne-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(148,163,184,.55);
+  border:1px solid rgba(226,232,240,.45);
+  flex-shrink:0;
+  box-shadow:0 0 0 1px rgba(15,25,40,.2);
+}
+.ne-village-marker.major .ne-dot{
+  width:9px;height:9px;
+  background:rgba(148,163,184,.35);
+  border:1.5px solid rgba(203,213,225,.7);
+  box-shadow:none;
+}
+.ne-village-marker .ne-label{display:none}
+.ne-village-icon{opacity:.85}
+.ne-village-icon:hover{opacity:1}
+.ne-village-icon:hover .ne-dot{
+  background:rgba(96,165,250,.75);
+  border-color:rgba(219,234,254,.9);
+}
+.ne-village-popup{z-index:960!important}
+.weather-map-marker{z-index:620}
+
+/* —— Τοπικά σημεία: κλειστά αρχικά, άνοιγμα με κλικ —— */
+.villageBox{
+  position:relative;
+  z-index:1;
+}
+/* Κλειστό (default collapsible) */
+#villageList.collapsible:not(.open){
+  max-height:0 !important;
+  overflow:hidden !important;
+  opacity:0 !important;
+  margin:0 !important;
+}
+/* Ανοιχτό μόνο με .open */
+#villageList.collapsible.open,
+.collapsible.villageBox.open{
+  max-height:280px !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  opacity:1 !important;
+  margin:0 0 12px 0 !important;
+}
+
+
+/* Όταν είναι ενεργό «Καιρός στον χάρτη» — απόκρυψη ετικετών ονομάτων οικισμών (αποφυγή επικάλυψης) */
+body.wxmap-on .ne-village-marker .ne-label{display:none!important}
+body.wxmap-on .ne-village-marker.major{gap:0}
+
+
+/* —— Visual polish v2.8 —— */
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(100,120,150,.4);border-radius:8px}
+::-webkit-scrollbar-thumb:hover{background:rgba(120,140,170,.55)}
+.ok{color:#4ade80!important}
+.warn{color:#fbbf24!important}
+.danger{color:#f87171!important}
+.muted{color:#8b9cb3}
+.small{font-size:11px;line-height:1.4}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:3px 0}
+.row b{font-weight:700}
+.basemapBar{
+  background:rgba(15,25,40,.82)!important;
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(80,110,150,.45)!important;
+  border-radius:12px!important;
+  box-shadow:0 8px 24px rgba(0,0,0,.3);
+  padding:5px!important;
+}
+.basemapBar button{
+  border-radius:8px!important;
+  font-weight:600!important;
+}
+.basemapBar button.active{
+  background:linear-gradient(180deg,#1e3a5f,#1d3352)!important;
+  border-color:#3b82f6!important;
+}
+.attrib-note{
+  background:rgba(15,25,40,.8)!important;
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(80,110,150,.4)!important;
+  border-radius:10px!important;
+}
+footer{
+  background:linear-gradient(180deg,#101a2b,#0c1422)!important;
+  border-top:1px solid rgba(71,95,130,.4)!important;
+  box-shadow:0 -8px 24px rgba(0,0,0,.2);
+}
+.panel h2.section-color{
+  border-radius:11px!important;
+  box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+#layersSection button{
+  text-align:left;
+  padding-left:12px;
+}
+#layersSection .refreshBtn{text-align:center}
+.leaflet-popup-content-wrapper{
+  border-radius:12px!important;
+  box-shadow:0 12px 32px rgba(0,0,0,.35)!important;
+  border:1px solid rgba(255,255,255,.08);
+}
+.leaflet-popup-tip{box-shadow:none}
+.dot{box-shadow:0 0 0 2px rgba(0,0,0,.2)}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.panel .card{animation:fadeInUp .25s ease both}
+
 </style>
 </head>
 <body>
 <header>
   <div>
     <h1>NORTH EVIA — CIVIL PROTECTION DASHBOARD</h1>
-    <div class="sub">Βόρεια Εύβοια • έκδοση 2.7 • LIVE πολυ-κίνδυνος (καιρός / πυρκαγιά / πλημμύρα / σεισμοί / ΕΜΥ) • live alerts • επιχειρησιακό εργαλείο συντονισμού</div>
+    <div class="sub">Βόρεια Εύβοια • έκδοση 2.8 • LIVE πολυ-κίνδυνος (καιρός / πυρκαγιά / πλημμύρα / σεισμοί / ΕΜΥ) • live alerts • επιχειρησιακό εργαλείο συντονισμού</div>
     <div style="margin-top:4px"><a href="https://dimosistiaiasaidipsou.gr/" target="_blank" rel="noopener" style="font-size:13px;font-weight:600;color:#7fd4ff;text-decoration:none">🔗 Επίσημη σελίδα Δήμου Ιστιαίας-Αιδηψού</a></div>
 
   </div>
@@ -274,7 +557,8 @@ footer a.footerLink:hover{color:#fff;text-decoration:underline}
   <div id="floodDetailsList" class="collapsible">
         <div class="card" style="cursor:pointer;border-left:3px solid #4c7bd9" onclick="window.open('https://riverwatch.pste.gov.gr/citizens','_blank','noopener')" title="RiverWatch — στάθμη ποταμών Περιφέρειας Στερεάς Ελλάδας">
       <b>🌊 RiverWatch ΠΣΤΕ — Στάθμη ποταμών</b><br>
-      <span class="muted small">Επίσημο δίκτυο · Εύβοια: Κηρέας, Λήλας, Μεσσάπιος, Ξηριάς · βροχόπτωση · live</span>
+      <span class="muted small">Επίσημο δίκτυο · Εύβοια: Κηρέας, Λήλας, Μεσσάπιος, Ξηριάς · κλικ → portal</span>
+      <div class="small muted" style="margin-top:4px">Δεν υπάρχει δημόσιο API (Cloudflare) · live αριθμοί παρακάτω από <b>GloFAS</b> (μοντέλο)</div>
     </div>
 <div class="card"><div class="row"><span>Κηρέας</span><b class="ok" id="kireasStatus">—</b></div></div>
     <div class="card"><div class="row"><span>Νηλέας</span><b class="ok" id="nileasStatus">—</b></div></div>
@@ -293,7 +577,7 @@ footer a.footerLink:hover{color:#fff;text-decoration:underline}
     </div>
     <div class="card" style="cursor:pointer;border-left:3px solid #e67e22" onclick="window.open('https://civilprotection.gov.gr/copernicus/2021-emsr527-pyrkagia-stin-boreia-eyboia','_blank','noopener')" title="Καμένες εκτάσεις πυρκαγιάς Αυγούστου 2021">
       <b>🔥➜🌊 Μετα-πυρικός κίνδυνος πλημμύρας</b>
-      <div class="small muted" style="margin-top:4px;line-height:1.5">Οι καμένες λεκάνες απορροής από την πυρκαγιά του Αυγούστου 2021 (Πευκί–Ροβιές–Γούβες κ.ά.) διατηρούν αυξημένο κίνδυνο αιφνίδιας πλημμύρας &amp; κατολισθήσεων για χρόνια μετά, λόγω απώλειας βλάστησης και αυξημένης απορροής/διάβρωσης. Ιδιαίτερη προσοχή σε έντονη βροχόπτωση πάνω από καμένες πλαγιές.</div>
+      <div class="small muted" style="margin-top:4px;line-height:1.5">Οι καμένες λεκάνες απορροής από την πυρκαγιά του Αυγούστου 2021 (Πευκί–Ροβιές–Γούβες κ.ά.) διατηρούν αυξημένο κίνδυνο αιφνίδιας πλημμύρας &amp; κατολισθήσεων. Ιδιαίτερη προσοχή σε έντονη βροχόπτωση πάνω από καμένες πλαγιές.</div>
     </div>
   </div>
   <div class="card" style="cursor:pointer" onclick="window.open('https://www.gein.noa.gr/','_blank','noopener')" title="Άνοιγμα Γεωδυναμικού Ινστιτούτου ΕΑΑ">
@@ -318,6 +602,14 @@ footer a.footerLink:hover{color:#fff;text-decoration:underline}
       <div class="row"><span>Βροχή σήμερα (σύνολο)</span><b id="rainVal">— mm</b></div>
     </div>
     <div class="card">
+      <b>💨 Άνεμος ανά υψόμετρο</b>
+      <div class="small muted" style="margin-bottom:6px">Παραλία vs ορεινά · δασοπυρόσβεση</div>
+      <div class="row"><span>Παραλία (Ιστιαία)</span><b id="windCoast">—</b></div>
+      <div class="row"><span>Κερασιά (~ορεινό)</span><b id="windKerasia">—</b></div>
+      <div class="row"><span>Τελέθριο (~ορεινό)</span><b id="windTelethrio">—</b></div>
+      <div class="small muted" id="windElevNote" style="margin-top:4px">Open-Meteo · ριπές 10 m</div>
+    </div>
+    <div class="card">
       <div class="row"><span>☀️ Ανατολή / Δύση</span><b id="sunTimes">—</b></div>
       <div class="small muted" id="daylightWindow">Παράθυρο εναέριων μέσων δασοπυρόσβεσης (μόνο ημέρα)</div>
     </div>
@@ -335,6 +627,7 @@ footer a.footerLink:hover{color:#fff;text-decoration:underline}
   </h2>
   <div class="card villageBox collapsible" id="villageList"><div class="small muted">φόρτωση δεδομένων…</div></div>
 
+  <div id="layersSection">
   <h2>🧭 LAYERS</h2>
   <div class="card" style="border-left:3px solid #2563eb">
     <b>📜 Ιστορικές πλημμύρες</b>
@@ -354,9 +647,10 @@ footer a.footerLink:hover{color:#fff;text-decoration:underline}
   <button id="btnBeach" onclick="toggleLayer('beach')">🏖️ Θαλάσσια διαφυγή</button>
   <button id="btnCam" onclick="toggleLayer('cam')">📷 Κάμερες</button>
   <button id="btnBurn" onclick="toggleLayer('burn')">🔥➜🌊 Καμένη ζώνη 2021</button>
-   <button id="btnHistoricalFloods" onclick="toggleLayer('historicalFloods')">📜 Ιστορικές πλημμύρες</button>
+  <button id="btnHistoricalFloods" onclick="toggleLayer('historicalFloods')">📜 Ιστορικές πλημμύρες</button>
   <button id="btnRoads" onclick="toggleLayer('roads')">🛣️ Άξονες διαφυγής</button>
   <button class="refreshBtn" onclick="refreshAll()">🔄 Ανανέωση δεδομένων</button>
+  </div>
 </section>
 
 <section id="mapSection">
@@ -984,12 +1278,13 @@ const villages = [
   {name:"Ωρεοί",          lat:38.9477, lon:23.0879, major:true},
   {name:"Πευκί",          lat:39.0083, lon:23.2105, major:true},
   {name:"Αρτεμίσιο",      lat:39.0116, lon:23.2264, major:true},
-  {name:"Γούβες",         lat:39.0041, lon:23.2462},
+  {name:"Γούβες",         lat:39.0041, lon:23.2462, major:true},
+  {name:"Βασιλικά",       lat:38.9665, lon:23.3565, major:true},
   {name:"Αγριοβοτάνι",    lat:39.0222, lon:23.3031},
   {name:"Αγιόκαμπος",     lat:38.9333, lon:23.0353},
-  {name:"Ροβιές",         lat:38.8119, lon:23.2279},
+  {name:"Ροβιές",         lat:38.8119, lon:23.2279, major:true},
   {name:"Γιάλτρα",        lat:38.8642, lon:22.9760},
-  {name:"Νέος Πύργος",    lat:38.9379, lon:23.0749},
+  {name:"Νέος Πύργος",    lat:38.9379, lon:23.0749, major:true},
   {name:"Λίμνη",          lat:38.7651, lon:23.3176, major:true},
   {name:"Μαντούδι",       lat:38.7987, lon:23.4788, major:true},
   {name:"Κηρίνθος",       lat:38.8100, lon:23.4430},
@@ -1000,7 +1295,7 @@ const villages = [
   {name:"Άγ. Γεώργιος Λιχάδας", lat:38.8350, lon:22.8900},
   {name:"Κάβος Λιχάδας",  lat:38.8285, lon:22.8420},
   {name:"Μηλιές",        lat:38.9442, lon:23.2740},
-  {name:"Κοκκινομηλιά",   lat:38.8971, lon:23.2651},
+  {name:"Κοκκινομηλιά",   lat:38.8971, lon:23.2651, major:true},
   {name:"Κανατάδικα",     lat:38.9942, lon:23.1157},
   {name:"Αγδίνες",        lat:38.9595, lon:23.2943},
   {name:"Γερακιού",       lat:38.9803, lon:23.2353},
@@ -1295,7 +1590,7 @@ const opapPoints = [
   {name:"Πευκί — Δημοτικό", lat:39.0083, lon:23.2105, type:"μερική", unit:"Δ.Ε. Αρτεμισίου", note:"Δημοτικό Σχολείο Πευκί"},
   {name:"Αρτεμίσιο", lat:39.0116, lon:23.2264, type:"ολική", unit:"Δ.Ε. Αρτεμισίου", note:"Είσοδος οικισμού"},
   {name:"Ελληνικά", lat:39.0200, lon:23.2800, type:"ολική", unit:"Δ.Ε. Αρτεμισίου", note:"Είσοδος οικισμού"},
-  {name:"Βασιλικά", lat:38.9900, lon:23.2800, type:"μερική", unit:"Δ.Ε. Αρτεμισίου", note:"Δημοτικό Σχολείο Βασιλικών"},
+  {name:"Βασιλικά", lat:38.9665, lon:23.3565, type:"μερική", unit:"Δ.Ε. Αρτεμισίου", note:"Δημοτικό Σχολείο Βασιλικών"},
   {name:"Ψαροπούλι", lat:38.9834, lon:23.3700, type:"μερική", unit:"Δ.Ε. Αρτεμισίου", note:"Παραλία Ψαροπούλι"},
   {name:"Τσαπουρνιά", lat:39.0100, lon:23.2500, type:"ολική", unit:"Δ.Ε. Αρτεμισίου", note:"Πλατεία οικισμού"},
   {name:"Αγριοβοτάνι", lat:39.0222, lon:23.3031, type:"ολική", unit:"Δ.Ε. Αρτεμισίου", note:"Πλατεία οικισμού"},
@@ -1315,18 +1610,19 @@ const opapPoints = [
 
 /* ---------- Παραλίες / θαλάσσια διαφυγή — σημεία ΣΤΗΝ ΑΚΤΗ (λίγο προς ξηρά) ---------- */
 const beachPoints = [
-  {name:"Παραλία Πευκί", lat:39.0095, lon:23.2090, note:"Κύριο σημείο καταφυγής / πλωτά μέσα · Δ.Ε. Αρτεμισίου"},
-  {name:"Παραλία Ψαροπούλι", lat:38.9845, lon:23.3680, note:"Συγκέντρωση · τουριστικά καταλύματα"},
-  {name:"Παραλία Αγριοβοτάνου / Κουτσούμπρι", lat:39.0235, lon:23.3000, note:"Αγριοβοτάνι · πλωτά μέσα → Πευκί"},
-  {name:"Παραλία Γουβών / Παλαιόκαστρο", lat:39.0060, lon:23.2420, note:"Διαφυγή δια θαλάσσης → Πευκί"},
-  {name:"Παραλία Ασμηνίου", lat:38.9760, lon:23.1820, note:"Συγκέντρωση Ασμηνίου / Κεφαλάς"},
-  {name:"Παραλία Ωρεών / λιμάνι", lat:38.9520, lon:23.0820, note:"Λιμάνι Ωρεών · πλωτά μέσα"},
-  {name:"Παραλία Λ. Αιδηψού / λιμάνι", lat:38.8565, lon:23.0405, note:"Λιμάνι Αιδηψού"},
-  {name:"Παραλία Ηλίων", lat:38.8495, lon:23.0230, note:"ΚΥΕ παραλίας Ηλίων"},
-  {name:"Παραλία Αγιοκάμπου", lat:38.9325, lon:23.0335, note:"ΚΥΕ παραλίας Αγιοκάμπου"},
-  {name:"Παραλία Γιαλτρών / Λουτρών", lat:38.8625, lon:22.9740, note:"ΚΥΕ Λουτρών Γιαλτρών"},
-  {name:"Παραλία Άγ. Γεωργίου Λιχάδας", lat:38.8320, lon:22.8880, note:"Διαφυγή πλωτά / οδικό δίκτυο"},
-  {name:"Παραλία Κάβου Λιχάδας", lat:38.8275, lon:22.8400, note:"Πλωτά μέσα · Νήσοι Μονόλια / Στρογγυλή"}
+  /* Συντεταγμένες στην ακτογραμμή / λιμάνι — όχι κέντρο οικισμού στη στεριά */
+  {name:"Παραλία Πευκί", lat:39.0112, lon:23.2120, note:"Κύριο σημείο καταφυγής / πλωτά μέσα · Δ.Ε. Αρτεμισίου"},
+  {name:"Παραλία Ψαροπούλι (Βασιλικά)", lat:38.9870, lon:23.3740, note:"Επίνειο Βασιλικών · συγκέντρωση · τουριστικά καταλύματα"},
+  {name:"Παραλία Ελληνικών / Άγ. Νικόλαος", lat:39.0048, lon:23.3345, note:"Βόρεια ακτή (περιοχή Αγριοβοτάνι–Ελληνικά) · πλωτά → Πευκί"},
+  {name:"Ακτή Αρτεμισίου / Παλαιόκαστρο", lat:39.0098, lon:23.2685, note:"Βόρεια ακτή (Γούβες–Αρτεμίσιο) · διαφυγή δια θαλάσσης → Πευκί"},
+  {name:"Ακτή Κανατάδικα / Ασμήνιο", lat:38.9975, lon:23.1285, note:"Βόρεια ακτή · συγκέντρωση Ασμηνίου / Κεφαλάς"},
+  {name:"Λιμάνι Ωρεών", lat:38.9505, lon:23.0905, note:"Λιμάνι Ωρεών · πλωτά μέσα"},
+  {name:"Λιμάνι Λ. Αιδηψού", lat:38.8582, lon:23.0375, note:"Λιμάνι Αιδηψού"},
+  {name:"Παραλία Ηλίων", lat:38.8510, lon:23.0175, note:"ΚΥΕ παραλίας Ηλίων"},
+  {name:"Παραλία Αγιοκάμπου", lat:38.9355, lon:23.0305, note:"ΚΥΕ παραλίας Αγιοκάμπου"},
+  {name:"Παραλία Λουτρών Γιαλτρών", lat:38.8645, lon:22.9695, note:"ΚΥΕ Λουτρών Γιαλτρών"},
+  {name:"Παραλία Άγ. Γεωργίου Λιχάδας", lat:38.8305, lon:22.8915, note:"Διαφυγή πλωτά / οδικό δίκτυο"},
+  {name:"Παραλία Κάβου Λιχάδας", lat:38.8258, lon:22.8375, note:"Πλωτά μέσα · Νήσοι Μονόλια / Στρογγυλή"}
 ];
 
 /* ---------- Κάμερες Δήμου (OSM θέσεις οικισμών) ---------- */
@@ -1433,10 +1729,48 @@ function toggleRoads(){ toggleCollapsible('roadsPanel','roadsChev'); }
 function toggleIncidentLog(){ toggleCollapsible('incidentLogPanel','incLogChev'); }
 
 /* κλικ σε οικισμό από τη λίστα → κεντράρισμα χάρτη + popup */
+
+function ensureVillagesOnTop(){
+  if(!map || !villageLayer) return;
+  if(!map.hasLayer(villageLayer)) villageLayer.addTo(map);
+  try{
+    const pane = map.getPane('villagePane');
+    if(pane){
+      pane.style.zIndex = 850;
+      // Μετακίνηση DOM στο τέλος ώστε να ζωγραφίζεται τελευταίο
+      if(pane.parentNode) pane.parentNode.appendChild(pane);
+    }
+    const tip = map.getPane('tooltipPane');
+    const pop = map.getPane('popupPane');
+    if(tip){ tip.style.zIndex = 900; if(tip.parentNode) tip.parentNode.appendChild(tip); }
+    if(pop){ pop.style.zIndex = 950; if(pop.parentNode) pop.parentNode.appendChild(pop); }
+    villageLayer.eachLayer(l=>{ if(l.bringToFront) l.bringToFront(); });
+  }catch(_){}
+}
+
+window._selectedVillage = null;
+function highlightVillageRow(name){
+  window._selectedVillage = name;
+  document.querySelectorAll('#villageList .villageRow').forEach(el=>{
+    const on = el.getAttribute('data-name') === name;
+    el.classList.toggle('active', on);
+    el.classList.toggle('selected', on);
+  });
+}
 function focusVillage(name, lat, lon){
-  map.setView([lat, lon], 13, {animate:true});
+  highlightVillageRow(name);
+  ensureVillagesOnTop();
+  if(typeof map !== 'undefined' && map && lat != null && lon != null){
+    map.setView([lat, lon], 13, {animate:true});
+  }
   const marker = villageMarkers[name];
-  if(marker) marker.openPopup();
+  if(marker){
+    setTimeout(()=>{
+      ensureVillagesOnTop();
+      try{ if(marker.bringToFront) marker.bringToFront(); }catch(_){}
+      marker.openPopup();
+    }, 220);
+  }
 }
 
 /* ---------- map setup ---------- */
@@ -1459,6 +1793,11 @@ if(typeof L === 'undefined'){
   if(mapEl) mapEl.innerHTML = '<div style="padding:20px;color:#ff6b6b;font-size:13px">⚠️ Ο χάρτης δεν φόρτωσε (η βιβλιοθήκη Leaflet δεν είναι διαθέσιμη — πιθανώς μπλοκαρισμένο CDN ή χωρίς σύνδεση). Τα υπόλοιπα δεδομένα του dashboard συνεχίζουν να λειτουργούν κανονικά.</div>';
 }
 const map = L.map('leafletMap', {zoomControl:true});
+// Ξεχωριστό pane για οικισμούς — πάνω από overlay layers (wxField, flood, fire circles)
+map.createPane('villagePane');
+map.getPane('villagePane').style.zIndex = 850;
+map.getPane('villagePane').style.pointerEvents = 'auto';
+
 /* Base maps χωρίς API key + δουλεύουν με file:// (χωρίς Referer).
    OSM public tiles μπλοκάρουν τοπικά ("Access blocked").
    CARTO raster πλέον απαιτεί API key ("API key required").
@@ -1614,7 +1953,7 @@ const WxFieldLayer = (typeof L.Layer==='function' && L.Layer.extend) ? L.Layer.e
   onAdd(m){
     this._map=m;
     this._canvas=L.DomUtil.create('canvas','wxf-canvas');
-    this._canvas.style.cssText='position:absolute;pointer-events:none;image-rendering:auto;z-index:350';
+    this._canvas.style.cssText='position:absolute;pointer-events:none;image-rendering:auto;z-index:200';
     m.getPanes().overlayPane.appendChild(this._canvas);
     m.on('moveend zoomend resize',this._draw,this);
     this._onClick=e=>{
@@ -1826,13 +2165,32 @@ const allPointsForBounds = [];
 const villageMarkers = {};
 villages.forEach(v=>{
   allPointsForBounds.push([v.lat,v.lon]);
-  const marker = L.circleMarker([v.lat,v.lon], {radius:v.major?5:3.5, color:'#fff', weight:v.major?2:1, fillColor:'#4c7bd9', fillOpacity:1});
-  if(v.major){
-    marker.bindTooltip(v.name, {permanent:true, direction:'top', offset:[0,-6], className:'muted'});
-  } else {
-    marker.bindTooltip(v.name, {direction:'top', offset:[0,-4]});
-  }
-  marker.bindPopup(`<div class="pop"><b>🔵 ${v.name}</b>Οικισμός Βόρειας Εύβοιας</div>`);
+  const isMajor = !!v.major;
+  // Όνομα μόνο με hover/κλικ — όχι μόνιμες ετικέτες στον χάρτη
+  const badge = isMajor
+    ? `<div class="ne-village-marker major"><span class="ne-dot"></span></div>`
+    : `<div class="ne-village-marker"><span class="ne-dot"></span></div>`;
+  const icon = L.divIcon({
+    className: 'ne-village-icon',
+    html: badge,
+    iconSize: isMajor ? [12, 12] : [10, 10],
+    iconAnchor: isMajor ? [6, 6] : [5, 5]
+  });
+  const marker = L.marker([v.lat, v.lon], {
+    icon,
+    pane: 'villagePane',
+    interactive: true,
+    keyboard: true,
+    zIndexOffset: isMajor ? 1200 : 1000
+  });
+  marker.bindTooltip(v.name, {direction:'top', offset:[0,-8], opacity:1, pane:'tooltipPane'});
+  marker.bindPopup(`<div class="pop"><b>🔵 ${v.name}</b>Οικισμός Βόρειας Εύβοιας</div>`, {
+    autoPan: true,
+    keepInView: true,
+    maxWidth: 280,
+    className: 'ne-village-popup'
+  });
+  marker.on('click', ()=> highlightVillageRow(v.name));
   marker.addTo(villageLayer);
   villageMarkers[v.name] = marker;
   v._marker = marker;
@@ -2056,10 +2414,15 @@ function toggleLayer(key){
       btn.classList.add('active');
       if(getFirmsKey()) loadFirmsHotspots();
     }
+    ensureVillagesOnTop();
     return;
   }
   if(map.hasLayer(layer)){ map.removeLayer(layer); btn.classList.remove('active'); }
   else { map.addLayer(layer); btn.classList.add('active'); }
+  if(key==='weatherMap'){
+    document.body.classList.toggle('wxmap-on', map.hasLayer(weatherMapLayer));
+  }
+  ensureVillagesOnTop();
 }
 
 /* ---------- weather icon + label mapping (WMO codes) ---------- */
@@ -2165,15 +2528,16 @@ let quakeLevelCls = 'ok';
 let redCodeLevelCls = 'ok';
 let fwiLevelCls = 'ok'; // EFFIS FWI (fotiestora.gr) — συμπληρωματική ένδειξη, ΟΧΙ επίσημη κατηγορία ΓΓΠΠ
 let severeLevelCls = 'ok'; // τοπική εκτίμηση έντονων καιρικών (ανεξάρτητη από Meteoalarm/RedCode)
+let aqLevelCls = 'ok';
 let lastNotifiedLevel = 'ok';
 let lastLevelKey = null; // 'ok' | 'warn' | 'danger' — για ανίχνευση αλλαγής
 window._redCodeActive = false;
 const pageTitleBase = document.title;
 
 const LEVEL_LABELS = {
-  ok: 'L1 — ΕΠΙΤΗΡΗΣΗ',
-  warn: 'L2 — ΕΤΟΙΜΟΤΗΤΑ',
-  danger: 'L3 — ΣΥΝΑΓΕΡΜΟΣ'
+  ok: 'L1 · ΕΠΙΤΗΡΗΣΗ',
+  warn: 'L2 · ΕΤΟΙΜΟΤΗΤΑ',
+  danger: 'L3 · ΣΥΝΑΓΕΡΜΟΣ'
 };
 const CAUSE_LABELS = {
   fire:'🔥 Πυρκαγιά (τοπικό FWI)',
@@ -2182,7 +2546,8 @@ const CAUSE_LABELS = {
   quake:'🌎 Σεισμός (NOA/ΕΑΑ)',
   redcode:'🚨 Red Code / Χάρτης ΓΓΠΠ',
   fwi:'🛰️ EFFIS FWI (ένδειξη fotiestora)',
-  severe:'⛈️ Έντονα καιρικά (τοπική εκτίμηση)'
+  severe:'⛈️ Έντονα καιρικά (τοπική εκτίμηση)',
+  aq:'🌫️ Ποιότητα αέρα / καπνός',
 };
 
 function levelKeyToShort(k){
@@ -2192,7 +2557,7 @@ function levelKeyToShort(k){
 function combineLevel(){
   const order = {ok:0, warn:1, danger:2};
   let worst = 'ok';
-  const parts = {fire:fireLevelCls, flood:floodLevelCls, alarm:alarmLevelCls, quake:quakeLevelCls, redcode:redCodeLevelCls, fwi:fwiLevelCls, severe:severeLevelCls};
+  const parts = {fire:fireLevelCls, flood:floodLevelCls, alarm:alarmLevelCls, quake:quakeLevelCls, redcode:redCodeLevelCls, fwi:fwiLevelCls, severe:severeLevelCls, aq:aqLevelCls};
   Object.values(parts).forEach(c=>{ if(c && order[c] > order[worst]) worst = c; });
 
   const causeKeys = Object.entries(parts).filter(([_,c])=>c===worst && worst!=='ok').map(([k])=>k);
@@ -2472,8 +2837,8 @@ function renderWeatherMapLayer(){
     const marker=L.marker([v.lat,v.lon],{
       icon:L.divIcon({
         className:'weather-map-marker',
-        html:`<div style="background:rgba(255,255,255,.96);border:2px solid #2563eb;border-radius:12px;padding:3px 7px;box-shadow:0 2px 7px rgba(0,0,0,.35);font-weight:800;font-size:12px;white-space:nowrap;color:#16324f">${icon} ${temp.toFixed(0)}°</div>`,
-        iconSize:null,iconAnchor:[25,16]
+        html:`<div style="background:rgba(255,255,255,.96);border:2px solid #2563eb;border-radius:12px;padding:3px 8px;box-shadow:0 2px 7px rgba(0,0,0,.35);font-weight:800;font-size:11px;white-space:nowrap;color:#16324f;line-height:1.25">${icon} ${temp.toFixed(0)}° <span style="font-weight:700;opacity:.85">${v.name}</span></div>`,
+        iconSize:null,iconAnchor:[40,16]
       }),
       zIndexOffset:700
     }).bindTooltip(`${v.name} · ${temp.toFixed(1)}°C`,{direction:'top',offset:[0,-12]}).bindPopup(popup);
@@ -2541,7 +2906,6 @@ async function fetchWeather(){
     severeLabel='⚠️ ΠΑΡΑΚΟΛΟΥΘΗΣΗ — πιθανά έντονα φαινόμενα'; severeCls='warn';
   }
   severeLevelCls = severeCls;
-
   // Ρητοί λόγοι ενεργοποίησης (για ορατότητα)
   const reasons = [];
   if(gN!=null && gN>=70) reasons.push('ριπές '+gN.toFixed(0)+' km/h (≥70)');
@@ -2668,10 +3032,16 @@ async function fetchWeather(){
   updateFireCard();
   const vc=document.getElementById('villageCount');if(vc)vc.textContent=String(villageResults.length);
   const listEl=document.getElementById('villageList');
-  if(listEl)listEl.innerHTML=villageResults.sort((a,b)=>b.fwi-a.fwi).map(v=>{
-    const rainTag=(v.rainNow&&v.rainNow>0.05)?' 🌧️':'';
-    return `<div class="villageRow" onclick="focusVillage('${String(v.name).replace(/'/g,"\\'")}',${v.lat},${v.lon})" title="Κλικ → χάρτης"><span class="vname">${v.name}${rainTag}</span><span>${Number(v.temp).toFixed(0)}°C • ${Number(v.wind).toFixed(0)}km/h • <b class="${v.c.cls}">${v.c.label}</b></span></div>`;
-  }).join('');
+  if(listEl){
+    const prev = window._selectedVillage;
+    listEl.innerHTML=villageResults.sort((a,b)=>b.fwi-a.fwi).map(v=>{
+      const rainTag=(v.rainNow&&v.rainNow>0.05)?' 🌧️':'';
+      const nm = String(v.name).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+      const nmJs = String(v.name).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+      const sel = (prev && prev === v.name) ? ' active selected' : '';
+      return `<div class="villageRow${sel}" data-name="${nm}" onclick="focusVillage('${nmJs}',${v.lat},${v.lon})" title="Κλικ → εστίαση στον χάρτη"><span class="vname">${nm}${rainTag}</span><span>${Number(v.temp).toFixed(0)}°C • ${Number(v.wind).toFixed(0)}km/h • <b class="${v.c.cls}">${v.c.label}</b></span></div>`;
+    }).join('');
+  }
 
   // Weather status ενημερώνεται μόνο εδώ — δεν εξαρτάται από Flood/Meteoalarm.
   setDot('dotWeather','statusWeather','Weather (Open-Meteo): ONLINE','ok');
@@ -2844,44 +3214,135 @@ async function fetchQuakes(){
 }
 
 async function fetchMeteoalarm(){
-  // Οι legacy RSS feeds του meteoalarm.org καταργήθηκαν στις 14/1/2026· χρησιμοποιείται πλέον το Atom feed.
-  // Το feeds.meteoalarm.org συχνά δεν στέλνει CORS headers, οπότε αυτό αναμένεται να αποτύχει σε πολλά browsers.
-  const url = 'https://feeds.meteoalarm.org/feeds/meteoalarm-legacy-atom-greece';
-  const res = await fetchWithTimeout(url,{cache:'no-store'});
-  if(!res.ok) throw new Error('meteoalarm http '+res.status);
-  const text = await res.text();
-  const xml = new DOMParser().parseFromString(text,'application/xml');
-  const entries = Array.from(xml.getElementsByTagName('entry'));
-  const relevant = entries.filter(e=>{
-    const t = (e.textContent||'');
-    return /Εύβοι|Evia|Στερεά Ελλάδ/i.test(t);
-  });
+  // Επίσημες προειδοποιήσεις Meteoalarm/ΕΜΥ για GR003 (Ανατολική Στερεά & Εύβοια).
+  // Το feeds.meteoalarm.org δεν στέλνει CORS → χρησιμοποιούμε JSON API + proxies.
+  const API = 'https://feeds.meteoalarm.org/api/v1/warnings/feeds-greece';
   const as = document.getElementById('alarmStatus');
-  if(!relevant.length){
-    if(as){ as.textContent='ΚΑΝΟΝΙΚΑ'; as.className='ok'; }
-    alarmLevelCls='ok';
-    setDot('dotAlarm','statusAlarm','Meteoalarm/ΕΜΥ: ONLINE','ok');
-    return;
+
+  function severityRank(sev, eventText){
+    const s = (sev||'') + ' ' + (eventText||'');
+    if(/Extreme|Red\b|Κόκκιν/i.test(s)) return 3;
+    if(/Severe|Orange|Πορτοκαλ/i.test(s)) return 2;
+    if(/Moderate|Minor|Yellow|Κίτριν|Moderate/i.test(s)) return 1;
+    return 1;
   }
-  const joined = relevant.map(e=>e.textContent).join(' ');
-  let label='ΚΙΤΡΙΝΟ', cls='warn';
-  if(/Red|Κόκκιν/i.test(joined)){ label='ΚΟΚΚΙΝΟ'; cls='danger'; }
-  else if(/Orange|Πορτοκαλ/i.test(joined)){ label='ΠΟΡΤΟΚΑΛΙ'; cls='warn'; }
-  alarmLevelCls=cls;
-  if(as){ as.textContent=label; as.className=cls; }
-  setDot('dotAlarm','statusAlarm','Meteoalarm/ΕΜΥ: ONLINE','ok');
+  function rankToLabel(r){
+    if(r>=3) return {label:'ΚΟΚΚΙΝΟ', cls:'danger'};
+    if(r>=2) return {label:'ΠΟΡΤΟΚΑΛΙ', cls:'warn'};
+    if(r>=1) return {label:'ΚΙΤΡΙΝΟ', cls:'warn'};
+    return {label:'ΚΑΝΟΝΙΚΑ', cls:'ok'};
+  }
+  function isGr003(info){
+    const areas = info.area || [];
+    for(const a of areas){
+      const codes = (a.geocode||[]).map(g=>String(g.value||''));
+      const desc = String(a.areaDesc||'');
+      if(codes.includes('GR003') || /Evvoia|Evia|Εύβοι|Έυβοι|East Sterea|Ανατολική Στερεά/i.test(desc)) return true;
+    }
+    return false;
+  }
+  function isActive(info){
+    const exp = info.expires ? Date.parse(info.expires) : NaN;
+    if(isFinite(exp) && exp < Date.now() - 3600000) return false; // έληξε πριν >1ώ
+    return true;
+  }
+  function parseWarningsJson(data){
+    const warnings = (data && data.warnings) || [];
+    let best = 0;
+    const events = [];
+    let latestExp = null;
+    for(const w of warnings){
+      const infos = ((w.alert||w).info) || [];
+      for(const info of infos){
+        if(!isGr003(info)) continue;
+        if(!isActive(info)) continue;
+        const ev = info.event || info.headline || '';
+        const r = severityRank(info.severity, ev);
+        if(r>best) best = r;
+        events.push(ev);
+        const exp = info.expires ? Date.parse(info.expires) : NaN;
+        if(isFinite(exp) && (latestExp==null || exp>latestExp)) latestExp = exp;
+      }
+    }
+    return {best, events, latestExp};
+  }
+
+  async function loadJsonViaProxy(target){
+    // 1) απευθείας (αν ποτέ ανοίξει CORS)
+    try{
+      const r = await fetchWithTimeout(target, {cache:'no-store'}, 6000);
+      if(r.ok){
+        const j = await r.json();
+        if(j && j.warnings) return j;
+      }
+    }catch(_){}
+    // 2) allorigins /get (επιστρέφει JSON με contents — συχνά data-URI base64)
+    try{
+      const u = 'https://api.allorigins.win/get?url=' + encodeURIComponent(target);
+      const r = await fetchWithTimeout(u, {cache:'no-store'}, 10000);
+      if(!r.ok) throw new Error('allorigins '+r.status);
+      const wrap = await r.json();
+      let c = wrap.contents || '';
+      if(typeof c === 'string' && c.startsWith('data:') && c.includes('base64,')){
+        const b64 = c.split('base64,')[1];
+        c = atob(b64);
+      }
+      const j = (typeof c === 'string') ? JSON.parse(c) : c;
+      if(j && j.warnings) return j;
+    }catch(e){ console.warn('meteoalarm allorigins', e.message||e); }
+    // 3) codetabs proxy
+    try{
+      const u = 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(target);
+      const r = await fetchWithTimeout(u, {cache:'no-store'}, 10000);
+      if(!r.ok) throw new Error('codetabs '+r.status);
+      const j = await r.json();
+      if(j && j.warnings) return j;
+    }catch(e){ console.warn('meteoalarm codetabs', e.message||e); }
+    throw new Error('Meteoalarm μη διαθέσιμο (CORS/δίκτυο)');
+  }
+
+  try{
+    const data = await loadJsonViaProxy(API);
+    const {best, events, latestExp} = parseWarningsJson(data);
+    const {label, cls} = rankToLabel(best);
+    alarmLevelCls = cls;
+    if(as){
+      as.textContent = label;
+      as.className = cls;
+    }
+    let sub = document.getElementById('alarmSubDetail');
+    if(!sub){
+      const card = as && as.closest('.card');
+      if(card){
+        sub = document.createElement('div');
+        sub.id = 'alarmSubDetail';
+        sub.className = 'small muted';
+        sub.style.marginTop = '4px';
+        card.appendChild(sub);
+      }
+    }
+    if(sub){
+      if(best===0) sub.textContent = 'Καμία ενεργή προειδοποίηση για Εύβοια (GR003)';
+      else {
+        const uniq = [...new Set(events)].slice(0,2).join(' · ');
+        let expTxt = '';
+        if(latestExp){
+          expTxt = ' · λήξη ' + new Date(latestExp).toLocaleString('el-GR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+        }
+        sub.textContent = (uniq || label) + expTxt;
+      }
+    }
+    setDot('dotAlarm','statusAlarm','Meteoalarm/ΕΜΥ: ONLINE','ok');
+  }catch(e){
+    console.error('fetchMeteoalarm', e);
+    if(as){ as.textContent='ΜΗ ΔΙΑΘΕΣΙΜΟ'; as.className='warn'; }
+    alarmLevelCls = 'ok';
+    setDot('dotAlarm','statusAlarm','Meteoalarm/ΕΜΥ: μη διαθέσιμο (CORS)','warn');
+    throw e;
+  }
 }
 
-/* ---------- Red Code / civilprotection.gov.gr — RSS δελτίων τύπου με 2-επίπεδο fallback ---------- */
-// Το civilprotection.gov.gr δημοσιεύει επίσημο RSS feed δελτίων τύπου (/deltia-tupou.rss),
-// αλλά ως κρατικό site (Drupal) δεν στέλνει Access-Control-Allow-Origin — το απευθείας fetch
-// από browser μπλοκάρεται από CORS. Γενικά CORS proxies (allorigins/codetabs) αποδείχτηκαν
-// αναξιόπιστα στην πράξη. Εναλλακτική λύση: χρησιμοποιούμε το rss2json.com — υπηρεσία φτιαγμένη
-// ειδικά για ακριβώς αυτή τη δουλειά (μετατροπή RSS→JSON για χρήση από browser, με ενσωματωμένο
-// CORS by design, όχι σαν side-effect ενός γενικού proxy). Τα γενικά proxies μένουν ως 2ο fallback.
-// Σημείωση διαφάνειας: το rss2json.com είναι δωρεάν τρίτο service (όχι του Υπουργείου/Anthropic),
-// με όριο ~10.000 αιτήματα/ημέρα στο δωρεάν tier — αρκετό για ανανέωση κάθε 20 λεπτά. Το feed
-// είναι δημόσιο περιεχόμενο (δελτία τύπου), όχι προσωπικά δεδομένα.
+
 async function fetchTextWithCorsFallback(targetUrl){
   const attempts = [
     targetUrl,
@@ -3247,41 +3708,67 @@ async function loadMarine(){
   }
 }
 
+/* Ορεινά σημεία Β. Εύβοιας για πρόγνωση χιονόπτωσης */
 const snowSites = [
-  {name:"Ιστιαία", lat:38.955, lon:23.152},
-  {name:"Κερασιά", lat:38.909, lon:23.324},
-  {name:"Τελέθριο", lat:38.870, lon:23.180}
+  {name:"Τελέθριο (ορεινό)", lat:38.870, lon:23.180, elev:"~900 m"},
+  {name:"Κερασιά (ορεινό)", lat:38.909, lon:23.324, elev:"~500 m"},
+  {name:"Κοκκινομηλιά / ορεινή", lat:38.905, lon:23.268, elev:"~450 m"},
+  {name:"Ροβιές (ορεινό)", lat:38.825, lon:23.230, elev:"~400 m"},
+  {name:"Γούβες / υψώματα", lat:38.915, lon:23.240, elev:"~350 m"}
 ];
 async function loadSnowForecast(){
   try{
-    const ref = snowSites[0];
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${ref.lat}&longitude=${ref.lon}&daily=snowfall_sum,temperature_2m_min,precipitation_probability_max,weather_code&forecast_days=7&timezone=Europe/Athens`;
+    const lats = snowSites.map(s=>s.lat).join(',');
+    const lons = snowSites.map(s=>s.lon).join(',');
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lats}&longitude=${lons}&daily=snowfall_sum,temperature_2m_min,precipitation_probability_max&forecast_days=7&timezone=Europe/Athens`;
     const r = await fetchWithTimeout(url);
     if(!r.ok) throw new Error('snow http '+r.status);
-    const d = await r.json();
-    const days = d.daily || {};
-    const dates = days.time || [];
-    const snow = days.snowfall_sum || [];
-    const tmin = days.temperature_2m_min || [];
-    const pprob = days.precipitation_probability_max || [];
-    let total = 0;
-    const dayRows = dates.map((dt,i)=>{
-      const s = Number(snow[i] ?? 0);
-      total += s;
+    const data = await r.json();
+    const arr = Array.isArray(data) ? data : [data];
+
+    // Συνολικό χιόνι 7ημ: μέγιστο μεταξύ ορεινών σημείων
+    let maxTotal = 0;
+    let worstIdx = 0;
+    const siteStats = arr.map((d,i)=>{
+      const snow = (d.daily && d.daily.snowfall_sum) || [];
+      const total = snow.reduce((a,b)=>a+Number(b||0),0);
+      if(total > maxTotal){ maxTotal = total; worstIdx = i; }
+      return {total, snow, tmin:(d.daily&&d.daily.temperature_2m_min)||[], pprob:(d.daily&&d.daily.precipitation_probability_max)||[], dates:(d.daily&&d.daily.time)||[]};
+    });
+
+    const totalMsg = maxTotal < 0.05
+      ? `<span class="ok">0 cm</span> <span class="muted small">(χωρίς χιόνι στα ορεινά)</span>`
+      : `<span class="${maxTotal>=10?'danger':maxTotal>=2?'warn':'ok'}">${maxTotal.toFixed(1)} cm</span> <span class="muted small">max ορεινά</span>`;
+    document.getElementById('snowTotal').innerHTML = totalMsg;
+    document.getElementById('snowUpdated').textContent =
+      'Open-Meteo · 7ημερη · ορεινά Β. Εύβοιας · '+new Date().toLocaleTimeString('el-GR',{hour:'2-digit',minute:'2-digit'});
+
+    // Ανά σημείο: σύνολο 7 ημερών
+    const sitesHtml = snowSites.map((s,i)=>{
+      const st = siteStats[i] || {total:0};
+      const cls = st.total>=5 ? 'danger' : st.total>=1 ? 'warn' : 'ok';
+      return `<div class="row" style="font-size:11.5px;padding:5px 0;border-bottom:1px solid rgba(40,55,75,.7)">
+        <span>❄️ ${s.name} <span class="muted">${s.elev||''}</span></span>
+        <b class="${cls}">${Number(st.total).toFixed(1)} cm</b>
+      </div>`;
+    }).join('');
+    document.getElementById('snowSitesList').innerHTML =
+      '<div class="small muted" style="margin-bottom:6px">Χιόνι 7 ημερών ανά ορεινό σημείο</div>'+sitesHtml;
+
+    // Ημερήσια για το σημείο με το περισσότερο χιόνι
+    const w = siteStats[worstIdx] || siteStats[0];
+    const siteName = snowSites[worstIdx] ? snowSites[worstIdx].name : snowSites[0].name;
+    const dayRows = (w.dates||[]).map((dt,i)=>{
+      const s = Number(w.snow[i] ?? 0);
       const dateLabel = new Date(dt+'T12:00:00').toLocaleDateString('el-GR',{weekday:'short',day:'2-digit',month:'2-digit'});
       const cls = s>=5 ? 'danger' : s>=1 ? 'warn' : 'ok';
       return `<div class="row" style="font-size:11px;padding:4px 0;border-bottom:1px solid #1c283b">
         <span>${s>=1?'❄️':'·'} ${dateLabel}</span>
-        <span><b class="${cls}">${s.toFixed(1)} cm</b> · min ${tmin[i]!=null?Number(tmin[i]).toFixed(0):'—'}°C · ${pprob[i]??'—'}%</span>
+        <span><b class="${cls}">${s.toFixed(1)} cm</b> · min ${w.tmin[i]!=null?Number(w.tmin[i]).toFixed(0):'—'}°C · ${w.pprob[i]??'—'}%</span>
       </div>`;
     }).join('');
-    const totalMsg = total < 0.05
-      ? `<span class="ok">0 cm</span> <span class="muted small">(χωρίς χιόνι στην πρόγνωση)</span>`
-      : `<span class="${total>=10?'danger':total>=2?'warn':'ok'}">${total.toFixed(1)} cm</span>`;
-    document.getElementById('snowTotal').innerHTML = totalMsg;
-    document.getElementById('snowUpdated').textContent = 'Open-Meteo · 7ημερη · Ιστιαία · '+new Date().toLocaleTimeString('el-GR');
-    document.getElementById('snowDaysList').innerHTML = '<div class="small muted" style="margin-bottom:4px">Ημερήσια (χιόνι · ελάχ. θερμοκ. · πιθ. υετού)</div>'+dayRows;
-    document.getElementById('snowSitesList').innerHTML = '<div class="small muted">Αναφορά: Ιστιαία. Για ορεινά σημεία ανοίξτε Windy Snow cover.</div>';
+    document.getElementById('snowDaysList').innerHTML =
+      `<div class="small muted" style="margin-bottom:4px">Ημερήσια (σημείο αναφοράς: <b>${siteName}</b>)</div>`+dayRows;
   }catch(e){
     console.warn('Snow forecast failed', e);
     const el = document.getElementById('snowUpdated');
@@ -3467,7 +3954,45 @@ async function loadAirQuality(){
   set('aqCo', c.carbon_monoxide, 'µg/m³');
   const uv = document.getElementById('aqUv');
   if(uv) uv.textContent = (c.uv_index!=null && isFinite(Number(c.uv_index))) ? Number(c.uv_index).toFixed(1) : '—';
+  // Αυτόματο L2 όταν κακή ποιότητα αέρα (καπνός/ρύποι) — PM2.5 ή European AQI
+  const aqi = Number(c.european_aqi);
+  const pm25 = Number(c.pm2_5);
+  if((isFinite(aqi) && aqi>80) || (isFinite(pm25) && pm25>=50)){
+    aqLevelCls = 'danger';
+  } else if((isFinite(aqi) && aqi>50) || (isFinite(pm25) && pm25>=25)){
+    aqLevelCls = 'warn'; // L2
+  } else {
+    aqLevelCls = 'ok';
+  }
 }
+
+
+/* ---------- Άνεμος ανά υψόμετρο (παραλία vs ορεινά) ---------- */
+async function loadWindByElevation(){
+  const pts = [
+    {id:'windCoast', name:'Ιστιαία', lat:38.9564, lon:23.1517},
+    {id:'windKerasia', name:'Κερασιά', lat:38.909, lon:23.324},
+    {id:'windTelethrio', name:'Τελέθριο', lat:38.870, lon:23.180}
+  ];
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${pts.map(p=>p.lat).join(',')}&longitude=${pts.map(p=>p.lon).join(',')}&current=wind_speed_10m,wind_gusts_10m,wind_direction_10m&timezone=Europe/Athens`;
+  const r = await fetchWithTimeout(url,{cache:'no-store'});
+  if(!r.ok) throw new Error('wind elev http '+r.status);
+  const data = await r.json();
+  const arr = Array.isArray(data)?data:[data];
+  pts.forEach((p,i)=>{
+    const c = (arr[i]&&arr[i].current)||{};
+    const el = document.getElementById(p.id);
+    if(!el) return;
+    const w = c.wind_speed_10m, g = c.wind_gusts_10m;
+    el.textContent = (w!=null?Number(w).toFixed(0):'—') + ' km/h' + (g!=null?' (ριπές '+Number(g).toFixed(0)+')':'');
+  });
+  const note = document.getElementById('windElevNote');
+  if(note) note.textContent = 'Open-Meteo · ενημ. '+new Date().toLocaleTimeString('el-GR',{hour:'2-digit',minute:'2-digit'});
+}
+
+
+
+
 
 async function refreshAll(){
   initFirmsKeyUI();
@@ -3509,6 +4034,9 @@ async function refreshAll(){
     await new Promise(r=>setTimeout(r, 300));
     try{ await fetchGlofas(); }
     catch(e){ console.error(e); ['glofasKireas','glofasNileas','glofasXerias'].forEach(id=>{ const el=document.getElementById(id); if(el){ el.textContent='—'; el.className='muted'; }}); }
+
+    await new Promise(r=>setTimeout(r, 300));
+    try{ await loadWindByElevation(); }catch(e){ console.warn('WindElev', e); }
   })();
 
   await Promise.allSettled([...independentTasks.map(fn=>fn()), openMeteoChain]);
