@@ -664,6 +664,15 @@ footer{
 </section>
 
 <section class="panel">
+  <h2 style="cursor:pointer;user-select:none" onclick="toggleMuniNews()" title="Άνοιγμα / κλείσιμο">
+    📰 ΑΝΑΚΟΙΝΩΣΕΙΣ Π.Π. ΔΗΜΟΥ <span id="muniNewsChev" class="muted small">▲</span>
+  </h2>
+  <div id="muniNewsPanel" class="collapsible open">
+    <div id="muniNewsList"><div class="small muted">φόρτωση ανακοινώσεων…</div></div>
+    <div class="small muted" id="muniNewsUpdated" style="margin-top:4px"></div>
+    <div class="small muted" style="margin-top:4px">Πηγή: <a href="https://dimosistiaiasaidipsou.gr/politki-prostasia/" target="_blank" rel="noopener" class="alarmLink">dimosistiaiasaidipsou.gr · Πολιτική Προστασία ↗</a></div>
+  </div>
+
   <h2 style="cursor:pointer;user-select:none" onclick="toggleFireApps()" title="Άνοιγμα / κλείσιμο λίστας">
     🔥 ΕΦΑΡΜΟΓΕΣ ΠΑΡΑΚΟΛΟΥΘΗΣΗΣ ΠΥΡΚΑΓΙΩΝ <span id="fireAppsChev" class="muted small">▼</span>
   </h2>
@@ -3994,12 +4003,99 @@ async function loadWindByElevation(){
 
 
 
+/* ---------- Ανακοινώσεις Πολιτικής Προστασίας Δήμου Ιστιαίας-Αιδηψού (WordPress RSS μέσω rss2json) ---------- */
+function toggleMuniNews(){ toggleCollapsible('muniNewsPanel','muniNewsChev'); }
+const MUNI_BASE = 'https://dimosistiaiasaidipsou.gr';
+const MUNI_FEEDS = [
+  MUNI_BASE + '/politki-prostasia/feed/',
+  MUNI_BASE + '/category/politki-prostasia/feed/',
+  MUNI_BASE + '/feed/'
+];
+function muniParseDate(str){
+  if(!str) return NaN;
+  let t = Date.parse(str);
+  if(isNaN(t)) t = Date.parse(String(str).replace(' ','T') + 'Z'); // rss2json: "YYYY-MM-DD HH:MM:SS" (UTC)
+  else if(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(str)) t = Date.parse(str.replace(' ','T') + 'Z');
+  return t;
+}
+function muniDecode(str){
+  const ta = document.createElement('textarea');
+  ta.innerHTML = String(str||'');
+  return ta.value;
+}
+async function muniLoadFeed(feed){
+  // 1) rss2json  2) απευθείας/CORS proxies με XML parse
+  try{
+    const r = await fetchWithTimeout('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feed) + '&count=30', {cache:'no-store'}, 8000);
+    if(!r.ok) throw new Error('rss2json http '+r.status);
+    const d = await r.json();
+    if(d.status !== 'ok' || !Array.isArray(d.items)) throw new Error('rss2json status '+d.status);
+    return d.items.map(it=>({title:it.title||'', link:it.link||'', t:muniParseDate(it.pubDate)}));
+  }catch(e){ console.warn('muni rss2json', feed, e.message||e); }
+  const text = await fetchTextWithCorsFallback(feed);
+  const xml = new DOMParser().parseFromString(text, 'application/xml');
+  return Array.from(xml.getElementsByTagName('item')).map(it=>({
+    title: it.getElementsByTagName('title')[0]?.textContent || '',
+    link: it.getElementsByTagName('link')[0]?.textContent || '',
+    t: muniParseDate(it.getElementsByTagName('pubDate')[0]?.textContent || '')
+  }));
+}
+async function fetchMuniNews(){
+  const box = document.getElementById('muniNewsList');
+  const upd = document.getElementById('muniNewsUpdated');
+  if(!box) return;
+  let items = null;
+  for(const feed of MUNI_FEEDS){
+    try{
+      const all = await muniLoadFeed(feed);
+      const f = all.filter(it=>/\/politki-prostasia\//i.test(it.link));
+      if(f.length){ items = f; break; }
+    }catch(e){ console.warn('muni feed', feed, e.message||e); }
+  }
+  if(!items){
+    box.innerHTML = '';
+    const d = document.createElement('div');
+    d.className = 'small muted';
+    d.textContent = 'Δεν φορτώθηκαν ανακοινώσεις αυτή τη στιγμή (δίκτυο/CORS) — ';
+    const a = document.createElement('a');
+    a.href = MUNI_BASE + '/politki-prostasia/'; a.target = '_blank'; a.rel = 'noopener'; a.className = 'alarmLink';
+    a.textContent = 'άνοιγμα απευθείας στο site του Δήμου ↗';
+    d.appendChild(a); box.appendChild(d);
+    if(upd) upd.textContent = '';
+    return;
+  }
+  items.sort((a,b)=>(isNaN(b.t)?0:b.t)-(isNaN(a.t)?0:a.t));
+  box.innerHTML = '';
+  items.slice(0,5).forEach((it,i)=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.cursor = 'pointer';
+    if(i===0) card.style.borderLeft = '3px solid #f59e0b';
+    card.onclick = ()=>window.open(it.link,'_blank','noopener');
+    const head = document.createElement('div');
+    head.className = 'small muted';
+    const when = isNaN(it.t) ? '' : new Date(it.t).toLocaleString('el-GR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    const fresh = !isNaN(it.t) && (Date.now()-it.t) < 24*3600*1000;
+    head.textContent = (i===0 ? 'ΠΙΟ ΠΡΟΣΦΑΤΗ · ' : '') + when + (fresh ? ' · 🆕 ΝΕΟ' : '');
+    const b = document.createElement('b');
+    b.style.display = 'block';
+    b.style.marginTop = '3px';
+    b.style.fontSize = i===0 ? '12.5px' : '11.5px';
+    b.style.lineHeight = '1.4';
+    b.textContent = muniDecode(it.title);
+    card.appendChild(head); card.appendChild(b);
+    box.appendChild(card);
+  });
+  if(upd) upd.textContent = 'Ενημερώθηκε ' + nowTime();
+}
+
 async function refreshAll(){
   initFirmsKeyUI();
 
   // Ανεξάρτητα modules (διαφορετικά domains) — τρέχουν ΠΑΡΑΛΛΗΛΑ αντί για το ένα μετά το άλλο.
   const independentTasks = [
     async()=>{ try{ await fetchRedCode(); } catch(e){ console.error('fetchRedCode', e); } },
+    async()=>{ try{ await fetchMuniNews(); } catch(e){ console.warn('fetchMuniNews', e); } },
     async()=>{ try{ await fetchFwiEvia(); } catch(e){ console.error('fetchFwiEvia', e); } },
     async()=>{ try{ loadDailyRiskMapImage(); } catch(e){ console.warn('loadDailyRiskMapImage', e); } },
     async()=>{ try{ await loadFirmsHotspots(); } catch(e){ console.error('FIRMS',e); setFirmsStatus('ΣΦΑΛΜΑ','danger'); } },
