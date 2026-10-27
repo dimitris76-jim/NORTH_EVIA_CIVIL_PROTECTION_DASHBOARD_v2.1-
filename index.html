@@ -613,8 +613,26 @@ footer{
       <div class="row"><span>☀️ Ανατολή / Δύση</span><b id="sunTimes">—</b></div>
       <div class="small muted" id="daylightWindow">Παράθυρο εναέριων μέσων δασοπυρόσβεσης (μόνο ημέρα)</div>
     </div>
+    <div class="card" id="meteoStationCard" style="border-left:3px solid #22c55e">
+      <div class="row"><b>📡 meteo.gr — Σταθμός Ιστιαίας (live)</b><span id="meteoStationStatus" class="muted small">φόρτωση…</span></div>
+      <div class="row"><span>Θερμοκρασία</span><b id="meteoTemp">—</b></div>
+      <div class="row"><span>Υγρασία</span><b id="meteoHum">—</b></div>
+      <div class="row"><span>Άνεμος</span><b id="meteoWind">—</b></div>
+      <div class="row"><span>Βαρόμετρο</span><b id="meteoBar">—</b></div>
+      <div class="row"><span>Βροχή σήμερα / rate</span><b id="meteoRain">—</b></div>
+      <div class="row"><span>Δρόσος / UV</span><b id="meteoDewUv">—</b></div>
+      <div class="small muted" id="meteoStationNote" style="margin-top:6px">Πηγή: penteli.meteo.gr · ΕΑΑ · ενημέρωση ανά ~10′</div>
+      <div class="small muted" style="margin-top:4px"><a href="https://penteli.meteo.gr/stations/istiaia/" target="_blank" rel="noopener" class="alarmLink">Άνοιγμα σταθμού ↗</a></div>
+    </div>
+    <div class="card" id="meteoCompareCard" style="border-left:3px solid #38bdf8">
+      <b>🔀 Σύγκριση Open-Meteo vs meteo.gr (Ιστιαία)</b>
+      <div class="row"><span>ΔΘ (OM − meteo)</span><b id="cmpTemp">—</b></div>
+      <div class="row"><span>ΔΆνεμος</span><b id="cmpWind">—</b></div>
+      <div class="row"><span>ΔΥγρασία</span><b id="cmpHum">—</b></div>
+      <div class="small muted" style="margin-top:4px">Θετικό = Open-Meteo υψηλότερο από μετρημένο σταθμό</div>
+    </div>
     <div class="card" style="cursor:pointer" onclick="window.open('https://penteli.meteo.gr/stations/istiaia/','_blank','noopener')">
-      <b>📡 Σταθμός Ιστιαίας (live)</b><br><span class="muted small">penteli.meteo.gr · μετρήσεις</span>
+      <b>📡 Σταθμός Ιστιαίας (σελίδα)</b><br><span class="muted small">penteli.meteo.gr · πλήρεις μετρήσεις</span>
     </div>
       <div class="card" style="cursor:pointer;border-left:3px solid #4c7bd9" onclick="window.open('https://oreoi-weather.gr/','_blank','noopener')" title="Τοπικός σταθμός Ωρεών">
       <b>📡 oreoi-weather.gr — Ωρεοί</b><br>
@@ -742,6 +760,27 @@ footer{
       <div class="row"><b>📅 Αυτόματη πρόγνωση 5 ημερών — Ιστιαία</b><span id="wxForecastModel" class="muted small">Open-Meteo</span></div>
       <div id="wxForecastActual" class="small" style="margin-top:8px">Φόρτωση πρόγνωσης…</div>
       <div class="muted" style="font-size:10px;margin-top:7px">Μοντελοποιημένη πρόγνωση· δεν αποτελεί επίσημη προειδοποίηση ΕΜΥ.</div>
+    </div>
+
+    <div class="card" id="meteoFcCard" style="border-left:3px solid #f59e0b">
+      <div class="row"><b>📅 meteo.gr — πρόγνωση Ιστιαίας</b><span id="meteoFcStatus" class="muted small">φόρτωση…</span></div>
+      <div id="meteoFcBody" class="small" style="margin-top:8px;line-height:1.45">Φόρτωση από meteo.gr…</div>
+      <div class="small muted" style="margin-top:6px">Πηγή: meteo.gr · ΕΑΑ · <a href="https://www.meteo.gr/cf.cfm?city_id=216" target="_blank" rel="noopener" class="alarmLink">πλήρης πρόγνωση ↗</a></div>
+    </div>
+
+    <div class="card" id="windyEmbedCard" style="border-left:3px solid #60a5fa;padding:10px">
+      <div class="row" style="margin-bottom:8px"><b>🌬️ Windy — live χάρτης Β. Εύβοια</b>
+        <span class="muted small">
+          <button type="button" onclick="setWindyOverlay('wind')" style="width:auto;padding:4px 8px;margin:0 2px;font-size:10px">Άνεμος</button>
+          <button type="button" onclick="setWindyOverlay('rain')" style="width:auto;padding:4px 8px;margin:0 2px;font-size:10px">Βροχή</button>
+          <button type="button" onclick="setWindyOverlay('thunder')" style="width:auto;padding:4px 8px;margin:0 2px;font-size:10px">Καταιγίδες</button>
+          <button type="button" onclick="setWindyOverlay('temp')" style="width:auto;padding:4px 8px;margin:0 2px;font-size:10px">Θερμ.</button>
+        </span>
+      </div>
+      <iframe id="windyEmbed" title="Windy North Evia" style="width:100%;height:280px;border:0;border-radius:10px;background:#0a1220"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        src="https://embed.windy.com/embed2.html?lat=38.95&lon=23.20&detailLat=38.956&detailLon=23.152&width=650&height=280&zoom=9&level=surface&overlay=wind&product=ecmwf&menu=&message=true&marker=true&calendar=now&pressure=true&type=map&location=coordinates&detail=true&metricWind=km/h&metricTemp=°C&radarRange=-1"></iframe>
+      <div class="small muted" style="margin-top:6px">Επίσημο embed Windy · μοντέλο ECMWF · δεν απαιτεί API key · <a href="https://www.windy.com/?38.950,23.200,9" target="_blank" rel="noopener" class="alarmLink">άνοιγμα πλήρους Windy ↗</a></div>
     </div>
 
     <div class="card" style="cursor:pointer" onclick="window.open('https://www.windy.com/-Thunderstorms?thunderstorms,38.900,23.300,8,i:pressure','_blank','noopener')" title="Windy — καταιγίδες με επίκεντρο Βόρεια Εύβοια">
@@ -1303,11 +1342,14 @@ const villages = [
   {name:"Λιχάδα",         lat:38.8491, lon:22.8645},
   {name:"Άγ. Γεώργιος Λιχάδας", lat:38.8350, lon:22.8900},
   {name:"Κάβος Λιχάδας",  lat:38.8285, lon:22.8420},
-  {name:"Μηλιές",        lat:38.9442, lon:23.2740},
+  {name:"Μηλιές",        lat:38.9442, lon:23.2740, major:true},
   {name:"Κοκκινομηλιά",   lat:38.8971, lon:23.2651, major:true},
   {name:"Κανατάδικα",     lat:38.9942, lon:23.1157},
   {name:"Αγδίνες",        lat:38.9595, lon:23.2943},
-  {name:"Γερακιού",       lat:38.9803, lon:23.2353},
+  {name:"Γερακιού",       lat:38.9803, lon:23.2353, major:true},
+  {name:"Ασμήνιο",        lat:38.9750, lon:23.1850, major:true},
+  {name:"Ταξιάρχης",      lat:38.9450, lon:23.0580, major:true},
+  {name:"Μονοκαρυά",      lat:38.9245, lon:23.2087, major:true},
   {name:"Ψαροπούλι",      lat:38.9834, lon:23.3700}
 ];
 
@@ -2899,6 +2941,7 @@ async function fetchWeather(){
   const precipProbMax=(d.precipitation_probability_max||[])[0];
   const tempMax=(d.temperature_2m_max||[])[0];
   ref._wx={temp,rh,wind,windDir,gust,rainNow,rainToday,rainTomorrow,code,pressure:c.pressure_msl};
+  window._omRefWx=ref._wx; try{updateMeteoCompare();}catch(_){}
 
   // Τοπική εκτίμηση "έντονων καιρικών φαινομένων" — proxy ανεξάρτητο από Meteoalarm/RedCode,
   // ώστε να υπάρχει πάντα κάποιο live alert ακόμη κι όταν τα επίσημα feeds αποτύχουν λόγω CORS.
@@ -3722,6 +3765,11 @@ const snowSites = [
   {name:"Τελέθριο (ορεινό)", lat:38.870, lon:23.180, elev:"~900 m"},
   {name:"Κερασιά (ορεινό)", lat:38.909, lon:23.324, elev:"~500 m"},
   {name:"Κοκκινομηλιά / ορεινή", lat:38.905, lon:23.268, elev:"~450 m"},
+  {name:"Μηλιές (ορεινό)", lat:38.9442, lon:23.2740, elev:"~350 m"},
+  {name:"Μονοκαρυά", lat:38.9245, lon:23.2087, elev:"~180 m"},
+  {name:"Γερακιού", lat:38.9803, lon:23.2353, elev:"~250 m"},
+  {name:"Ασμήνιο / υψώματα", lat:38.9750, lon:23.1850, elev:"~100 m"},
+  {name:"Ταξιάρχης", lat:38.9450, lon:23.0580, elev:"~150 m"},
   {name:"Ροβιές (ορεινό)", lat:38.825, lon:23.230, elev:"~400 m"},
   {name:"Γούβες / υψώματα", lat:38.915, lon:23.240, elev:"~350 m"}
 ];
@@ -4089,6 +4137,191 @@ async function fetchMuniNews(){
   if(upd) upd.textContent = 'Ενημερώθηκε ' + nowTime();
 }
 
+
+/* ---------- meteo.gr live station (penteli) + city forecast + Windy embed ---------- */
+window._meteoStation = null;
+window._omRefWx = null;
+
+function setWindyOverlay(kind){
+  const iframe = document.getElementById('windyEmbed');
+  if(!iframe) return;
+  const base = {
+    wind: 'wind',
+    rain: 'rain',
+    thunder: 'thunder',
+    temp: 'temp'
+  }[kind] || 'wind';
+  const src = 'https://embed.windy.com/embed2.html?lat=38.95&lon=23.20&detailLat=38.956&detailLon=23.152&width=650&height=280&zoom=9&level=surface&overlay='+base+'&product=ecmwf&menu=&message=true&marker=true&calendar=now&pressure=true&type=map&location=coordinates&detail=true&metricWind=km/h&metricTemp=%C2%B0C&radarRange=-1';
+  iframe.src = src;
+}
+
+function parseMeteoStationHtml(html){
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const lines = Array.from(doc.querySelectorAll('.realtime .line'));
+  const map = {};
+  lines.forEach(line=>{
+    const left = (line.querySelector('.lleft')?.textContent || '').replace(/\s+/g,' ').trim();
+    const right = (line.querySelector('.lright')?.textContent || '').replace(/\s+/g,' ').trim();
+    if(!left || !right) return;
+    map[left] = right;
+  });
+  // headline time
+  const head = doc.querySelector('.realtime .headline')?.textContent || '';
+  const timeMatch = head.match(/(\d{2}\/\d{2}\/\d{4}\s+\d{1,2}:\d{2})/);
+  const time = timeMatch ? timeMatch[1] : '';
+
+  function pick(...keys){
+    for(const k of keys){
+      for(const [lk,v] of Object.entries(map)){
+        if(lk.toLowerCase().includes(k.toLowerCase())) return v;
+      }
+    }
+    return '';
+  }
+  const tempStr = pick('Temperature','Θερμοκρασία');
+  const humStr = pick('Humidity','Υγρασία');
+  const windStr = pick('Wind','Άνεμος');
+  const barStr = pick('Barometer','Βαρόμετρο');
+  const rainStr = pick("Today's Rain",'Σημερινός Υετός');
+  const rateStr = pick('Rain Rate','Ραγδαιότητα');
+  const dewStr = pick('Dew Point','Σημείο Δρόσου');
+  const uvStr = pick('UV Index','Υπεριώδης');
+
+  const num = (s)=>{
+    const m = String(s||'').replace(',','.').match(/-?\d+(?:\.\d+)?/);
+    return m ? Number(m[0]) : null;
+  };
+  const windParts = String(windStr).match(/([\d.]+)\s*Km\/h\s*(?:at\s+)?([A-Z]{1,3})?/i);
+
+  return {
+    time,
+    temp: num(tempStr),
+    hum: num(humStr),
+    wind: windParts ? Number(windParts[1]) : num(windStr),
+    windDir: windParts ? (windParts[2]||'') : '',
+    bar: num(barStr),
+    rainToday: num(rainStr),
+    rainRate: num(rateStr),
+    dew: num(dewStr),
+    uv: num(uvStr),
+    raw: map
+  };
+}
+
+function updateMeteoCompare(){
+  const m = window._meteoStation;
+  const o = window._omRefWx;
+  const set = (id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
+  if(!m || !o){
+    set('cmpTemp','—'); set('cmpWind','—'); set('cmpHum','—');
+    return;
+  }
+  const dT = (o.temp!=null && m.temp!=null) ? (Number(o.temp)-Number(m.temp)) : null;
+  const dW = (o.wind!=null && m.wind!=null) ? (Number(o.wind)-Number(m.wind)) : null;
+  const dH = (o.rh!=null && m.hum!=null) ? (Number(o.rh)-Number(m.hum)) : null;
+  set('cmpTemp', dT==null?'—':((dT>=0?'+':'')+dT.toFixed(1)+' °C'));
+  set('cmpWind', dW==null?'—':((dW>=0?'+':'')+dW.toFixed(0)+' km/h'));
+  set('cmpHum', dH==null?'—':((dH>=0?'+':'')+dH.toFixed(0)+' %'));
+}
+
+async function fetchMeteoStation(){
+  const status = document.getElementById('meteoStationStatus');
+  const note = document.getElementById('meteoStationNote');
+  const urls = [
+    'http://penteli.meteo.gr/stations/istiaia/',
+    'https://penteli.meteo.gr/stations/istiaia/'
+  ];
+  let html = null, lastErr = null;
+  for(const u of urls){
+    try{
+      html = await fetchTextWithCorsFallback(u);
+      if(html && /Θερμοκρασία|Temperature/i.test(html)) break;
+      html = null;
+    }catch(e){ lastErr = e; }
+  }
+  if(!html){
+    if(status){ status.textContent='ΜΗ ΔΙΑΘΕΣΙΜΟ'; status.className='warn'; }
+    if(note) note.textContent = 'Αποτυχία φόρτωσης σταθμού (CORS/δίκτυο) · άνοιξε penteli.meteo.gr';
+    throw lastErr || new Error('meteo station unavailable');
+  }
+  const data = parseMeteoStationHtml(html);
+  window._meteoStation = data;
+  const set = (id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
+  set('meteoTemp', data.temp!=null ? data.temp.toFixed(1)+' °C' : '—');
+  set('meteoHum', data.hum!=null ? data.hum.toFixed(0)+' %' : '—');
+  set('meteoWind', data.wind!=null ? (data.wind.toFixed(0)+' km/h'+(data.windDir?' '+data.windDir:'')) : '—');
+  set('meteoBar', data.bar!=null ? data.bar.toFixed(1)+' hPa' : '—');
+  set('meteoRain', (data.rainToday!=null?data.rainToday.toFixed(1)+' mm':'—')+' / '+(data.rainRate!=null?data.rainRate.toFixed(1)+' mm/h':'—'));
+  set('meteoDewUv', (data.dew!=null?data.dew.toFixed(1)+' °C':'—')+' / UV '+(data.uv!=null?data.uv.toFixed(1):'—'));
+  if(status){ status.textContent = data.time ? data.time : 'ONLINE'; status.className='ok'; }
+  if(note) note.textContent = 'Πηγή: penteli.meteo.gr · ΕΑΑ · live μετρήσεις σταθμού Ιστιαίας';
+  updateMeteoCompare();
+
+  // Έντονα φαινόμενα: αν ο πραγματικός σταθμός δείχνει ισχυρό άνεμο/βροχή, ενίσχυσε το watch
+  try{
+    if(data.rainRate!=null && data.rainRate>=10){
+      const sev=document.getElementById('severeWatchStatus');
+      if(sev && !/ΕΠΙΦΥΛΑΚΗ/.test(sev.textContent||'')){
+        // δεν αντικαθιστούμε danger· μόνο ανεβάζουμε σε παρακολούθηση αν ήταν ok
+        if(sev.className==='ok'){
+          sev.textContent='⚠️ ΠΑΡΑΚΟΛΟΥΘΗΣΗ — meteo.gr rain rate';
+          sev.className='warn';
+        }
+      }
+    }
+  }catch(_){}
+}
+
+function parseMeteoCityForecast(html){
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const alerts = Array.from(doc.querySelectorAll('.infotemp')).map(el=>el.textContent.replace(/\s+/g,' ').trim()).filter(Boolean);
+  // Day headers / temp cells are varied; pull a few visible temp + humidity snippets
+  const dayBlocks = [];
+  const dayAnchors = doc.querySelectorAll('[id^="day"]');
+  dayAnchors.forEach((el,i)=>{
+    if(i>3) return;
+    const t = el.textContent.replace(/\s+/g,' ').trim().slice(0,220);
+    if(t) dayBlocks.push(t);
+  });
+  // Fallback: collect humidity + km/h pairs near forecast table
+  const hums = Array.from(doc.querySelectorAll('[title*="Υγρασία"], [name*="Υγρασία"]')).slice(0,6).map(el=>{
+    const m = (el.getAttribute('title')||el.getAttribute('name')||el.textContent||'').match(/(\d+)\s*%/);
+    return m?m[1]+'%':null;
+  }).filter(Boolean);
+  const winds = Array.from(doc.querySelectorAll('.kmh')).slice(0,6).map(el=>{
+    const m = el.textContent.match(/([\d.]+)\s*Km\/h/i);
+    return m?m[1]+' km/h':null;
+  }).filter(Boolean);
+  return {alerts: [...new Set(alerts)].slice(0,4), hums, winds, dayBlocks};
+}
+
+async function fetchMeteoCityForecast(){
+  const status = document.getElementById('meteoFcStatus');
+  const body = document.getElementById('meteoFcBody');
+  try{
+    const html = await fetchTextWithCorsFallback('https://www.meteo.gr/cf.cfm?city_id=216');
+    const parsed = parseMeteoCityForecast(html);
+    if(status){ status.textContent='ONLINE'; status.className='ok'; }
+    let htmlOut = '';
+    if(parsed.alerts.length){
+      htmlOut += '<div style="margin-bottom:6px">'+parsed.alerts.map(a=>'<div class="alarmCard yellow" style="margin:4px 0"><b>meteo.gr</b>'+a+'</div>').join('')+'</div>';
+    }
+    if(parsed.hums.length || parsed.winds.length){
+      htmlOut += '<div class="row"><span>Υγρασία (δείγματα)</span><b>'+(parsed.hums.slice(0,3).join(' · ')||'—')+'</b></div>';
+      htmlOut += '<div class="row"><span>Άνεμος (δείγματα)</span><b>'+(parsed.winds.slice(0,3).join(' · ')||'—')+'</b></div>';
+    }
+    if(!htmlOut){
+      htmlOut = 'Φορτώθηκε η σελίδα meteo.gr · δες την πλήρη τριήμερη πρόγνωση στον σύνδεσμο παρακάτω.';
+    }
+    if(body) body.innerHTML = htmlOut;
+  }catch(e){
+    console.warn('fetchMeteoCityForecast', e);
+    if(status){ status.textContent='ΜΗ ΔΙΑΘΕΣΙΜΟ'; status.className='warn'; }
+    if(body) body.textContent = 'Αποτυχία φόρτωσης meteo.gr (CORS/δίκτυο).';
+  }
+}
+
+
 async function refreshAll(){
   initFirmsKeyUI();
 
@@ -4101,6 +4334,8 @@ async function refreshAll(){
     async()=>{ try{ await loadFirmsHotspots(); } catch(e){ console.error('FIRMS',e); setFirmsStatus('ΣΦΑΛΜΑ','danger'); } },
     async()=>{ try{ await fetchMeteoalarm(); } catch(e){ console.error(e); setDot('dotAlarm','statusAlarm','Meteoalarm/ΕΜΥ: μη διαθέσιμο (browser/CORS)','warn'); } },
     async()=>{ try{ await fetchQuakes(); } catch(e){ console.error(e); setDot('dotQuake','statusQuake','Σεισμοί (NOA/ΕΑΑ): ΣΦΑΛΜΑ ΣΥΝΔΕΣΗΣ','danger'); } },
+    async()=>{ try{ await fetchMeteoStation(); } catch(e){ console.warn('meteo station', e); } },
+    async()=>{ try{ await fetchMeteoCityForecast(); } catch(e){ console.warn('meteo city fc', e); } },
   ];
 
   // Η οικογένεια Open-Meteo (weather/marine/air-quality/snow/glofas) κρατάει τη δική της
